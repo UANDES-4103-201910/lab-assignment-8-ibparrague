@@ -4,6 +4,7 @@ class KeyboardController {
     constructor(id_target) {
         this.target= $(id_target);
         this.element = document.getElementById("targetelement");
+        this.shift = 0
     }
 
     toggleKeyboard(){
@@ -19,7 +20,7 @@ class KeyboardController {
     keyPressed(key) {
 
         if (key.text().includes("Tab")){
-          this.element.innerHTML += "tab_space";
+          this.element.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
         }
         else if (key.text().includes("Accept")){
           alert("Accepted")
@@ -28,16 +29,40 @@ class KeyboardController {
           alert("Canceled")
         }
         else if (key.text().includes("Enter")){
-          this.element.innerHTML += "<p>"
+          this.element.innerHTML += "<br>"
+        }
+
+        else if (key.text().includes("Bksp")){
+          var asd = this.element.innerHTML
+          var lasd = this.element.innerHTML.length
+          if (asd.length > 0){
+            this.element.innerHTML = asd.substring(0, asd.length - 1);
+          }
+          var l2asd = this.element.innerHTML.length
+          if (l2asd == lasd){
+            var pos = this.element.innerHTML.lastIndexOf('&nbsp;');
+            this.element.innerHTML = this.element.innerHTML.substring(0,pos) + this.element.innerHTML.substring(pos+6);
+          }
+        }
+        else if (key.hasClass("key-space")){
+          this.element.innerHTML += "&nbsp"
+        }
+        else if (key.text().includes("Accept")){
+          alert("Accepted")
         }
         else if (key.text().includes("Shift")){
-          this.element.innerHTML += "s_"
-        }
-        else if (key.text().includes("Bksp")){
-          this.element.innerHTML = this.element.innerHTML.slice(0,-1)
+          this.shift = 1
         }
         else{
-          this.element.innerHTML += key.text()
+          var dsa = key.text().trim()
+          if (this.shift == 0){
+            dsa = dsa.toLowerCase()
+            this.element.innerHTML += dsa
+          }
+          if (this.shift == 1){
+            this.element.innerHTML += dsa
+            this.shift = 0
+          }
         }
     }
 }
